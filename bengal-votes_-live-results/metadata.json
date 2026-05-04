@@ -1,0 +1,6 @@
+{
+  "name": "Bengal Votes: Live Results",
+  "description": "A real-time election dashboard for West Bengal constituencies featuring a GitHub-style grid, live vote simulations, and detailed seat analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

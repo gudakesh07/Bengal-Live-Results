@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-bjp: #f97316;
+  --color-tmc: #3b82f6;
+  --color-others: #ec4899;
+  --color-bg-dark: #000000;
+  --color-panel: #111111;
+}
+
+@layer base {
+  body {
+    @apply bg-black text-zinc-100 font-sans antialiased;
+  }
+}
+
+
+.github-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8px, 1fr));
+  gap: 3px;
+}
+
+@media (min-width: 640px) {
+  .github-grid {
+    grid-template-columns: repeat(21, 1fr);
+    gap: 3px;
+  }
+}
+
