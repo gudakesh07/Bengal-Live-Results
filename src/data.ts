@@ -7,16 +7,106 @@ import { Constituency, Party } from "./types";
 import electionResults from "./data/election-results.json";
 
 const REAL_NAMES = [
-  "Mekliganj", "Mathabhanga", "Cooch Behar Uttar", "Cooch Behar Dakshin", "Sitai", "Sitalkuchi", "Dinata", "Natabari", "Tufanganj", "Kumargram",
-  "Kalchini", "Alipurduars", "Falakata", "Madarihat", "Dhupguri", "Maynaguri", "Jalpaiguri", "Rajganj", "Dabgram-Fulbari", "Mal",
-  "Nagrakata", "Kalimpong", "Darjeeling", "Kurseong", "Matigara-Naxalbari", "Siliguri", "Phansidewa", "Chopra", "Islampur", "Goalpokhar",
-  "Chakulia", "Karandighi", "Raiganj", "Kaliaganj", "Itahar", "Kushmandi", "Kumargram", "Balurghat", "Tapan", "Gangarampur",
-  "Harirampur", "Habibpur", "Gazole", "Chanchal", "Harishchandrapur", "Malatipur", "Ratua", "Manikchak", "Maldaha", "English Bazar",
-  "Mothabari", "Suapur", "Baisnabnagar", "Farakka", "Samserganj", "Suti", "Jangipur", "Raghunathganj", "Sagardighi", "Lalgola",
-  "Bhagabangola", "Raninagar", "Murshidabad", "Nabagram", "Khargram", "Burwan", "Kandi", "Bharatpur", "Rejinagar", "Beldanga",
-  "Baharampur", "Hariharpara", "Naoda", "Domkal", "Jalangi", "Karimpur", "Tehatta", "Palashipara", "Kaliganj", "Nakashipara",
-  "Chapra", "Krishnanagar Uttar", "Nabadwip", "Krishnanagar Dakshin", "Santipur", "Ranaghat Uttar Paschim", "Krishnaganj", "Ranaghat Uttar Purba", "Ranaghat Dakshin", "Chakdaha",
-  "Haringhata", "Bagdah", "Bongaon Uttar", "Bongaon Dakshin", "Gaighata", "Swarupnagar", "Baduria", "Basirhat Uttar", "Basirhat Dakshin", "Hingalganj"
+  "Mekliganj",
+  "Mathabhanga",
+  "Cooch Behar Uttar",
+  "Cooch Behar Dakshin",
+  "Sitai",
+  "Sitalkuchi",
+  "Dinata",
+  "Natabari",
+  "Tufanganj",
+  "Kumargram",
+  "Kalchini",
+  "Alipurduars",
+  "Falakata",
+  "Madarihat",
+  "Dhupguri",
+  "Maynaguri",
+  "Jalpaiguri",
+  "Rajganj",
+  "Dabgram-Fulbari",
+  "Mal",
+  "Nagrakata",
+  "Kalimpong",
+  "Darjeeling",
+  "Kurseong",
+  "Matigara-Naxalbari",
+  "Siliguri",
+  "Phansidewa",
+  "Chopra",
+  "Islampur",
+  "Goalpokhar",
+  "Chakulia",
+  "Karandighi",
+  "Raiganj",
+  "Kaliaganj",
+  "Itahar",
+  "Kushmandi",
+  "Kumargram",
+  "Balurghat",
+  "Tapan",
+  "Gangarampur",
+  "Harirampur",
+  "Habibpur",
+  "Gazole",
+  "Chanchal",
+  "Harishchandrapur",
+  "Malatipur",
+  "Ratua",
+  "Manikchak",
+  "Maldaha",
+  "English Bazar",
+  "Mothabari",
+  "Suapur",
+  "Baisnabnagar",
+  "Farakka",
+  "Samserganj",
+  "Suti",
+  "Jangipur",
+  "Raghunathganj",
+  "Sagardighi",
+  "Lalgola",
+  "Bhagabangola",
+  "Raninagar",
+  "Murshidabad",
+  "Nabagram",
+  "Khargram",
+  "Burwan",
+  "Kandi",
+  "Bharatpur",
+  "Rejinagar",
+  "Beldanga",
+  "Baharampur",
+  "Hariharpara",
+  "Naoda",
+  "Domkal",
+  "Jalangi",
+  "Karimpur",
+  "Tehatta",
+  "Palashipara",
+  "Kaliganj",
+  "Nakashipara",
+  "Chapra",
+  "Krishnanagar Uttar",
+  "Nabadwip",
+  "Krishnanagar Dakshin",
+  "Santipur",
+  "Ranaghat Uttar Paschim",
+  "Krishnaganj",
+  "Ranaghat Uttar Purba",
+  "Ranaghat Dakshin",
+  "Chakdaha",
+  "Haringhata",
+  "Bagdah",
+  "Bongaon Uttar",
+  "Bongaon Dakshin",
+  "Gaighata",
+  "Swarupnagar",
+  "Baduria",
+  "Basirhat Uttar",
+  "Basirhat Dakshin",
+  "Hingalganj",
 ];
 
 function seededRandom(seed: number) {
@@ -42,7 +132,7 @@ function processEciData(json: any): Constituency[] {
   }
 
   const constituencies: Constituency[] = [];
-  
+
   dataArray.forEach((item: any, index: number) => {
     // If item is an array like ["BJP", "S25", 1, "CANDIDATE", "#color"]
     let acIndex = index;
@@ -51,19 +141,24 @@ function processEciData(json: any): Constituency[] {
     let leading = "OTHERS" as Party;
 
     if (Array.isArray(item)) {
-      leading = (item[0] === "BJP" || item[0] === "AITC" || item[0] === "TMC") ? 
-                 (item[0] === "AITC" ? "TMC" : item[0]) as Party : "OTHERS";
+      leading =
+        item[0] === "BJP" || item[0] === "AITC" || item[0] === "TMC"
+          ? ((item[0] === "AITC" ? "TMC" : item[0]) as Party)
+          : "OTHERS";
       acIndex = Math.max(0, parseInt(item[2]) - 1);
       candidateName = item[3] !== "NA" ? item[3] : "Unknown";
       name = REAL_NAMES[acIndex] || `AC-${acIndex + 1}`;
     } else {
       // Original parsing logic
-      acIndex = item.constituencyId ? Math.max(0, parseInt(item.constituencyId) - 1) : index;
+      acIndex = item.constituencyId
+        ? Math.max(0, parseInt(item.constituencyId) - 1)
+        : index;
       candidateName = item.candidate || `Candidate ${index}`;
       name = REAL_NAMES[acIndex] || item.constituency || `AC-${acIndex + 1}`;
-      leading = (item.party === "BJP" || item.party === "TMC") ? item.party : "OTHERS";
+      leading =
+        item.party === "BJP" || item.party === "TMC" ? item.party : "OTHERS";
     }
-    
+
     let bjp, tmc, others;
     if (leading === "BJP") {
       bjp = getDeterministicVotes(40000, 80000, acIndex * 3);
@@ -81,9 +176,9 @@ function processEciData(json: any): Constituency[] {
 
     // Attempt to use real votes if available in an object approach
     if (!Array.isArray(item) && item.votes) {
-       if (leading === "BJP") bjp = item.votes;
-       else if (leading === "TMC") tmc = item.votes;
-       else others = item.votes;
+      if (leading === "BJP") bjp = item.votes;
+      else if (leading === "TMC") tmc = item.votes;
+      else others = item.votes;
     }
 
     constituencies.push({
@@ -93,7 +188,7 @@ function processEciData(json: any): Constituency[] {
       leading_party: leading,
       bjp_votes: bjp,
       tmc_votes: tmc,
-      others_votes: others
+      others_votes: others,
     });
   });
 
@@ -101,10 +196,26 @@ function processEciData(json: any): Constituency[] {
 }
 
 const CANDIDATE_NAMES = [
-  "Suvendu Adhikari", "Partha Bhowmick", "Subhasankar Sarkar", "Firhad Hakim", "Arup Biswas", 
-  "Bratya Basu", "Tanmoy Ghosh", "Dilip Ghosh", "Manoj Tigga", "Locket Chatterjee",
-  "Agnimitra Paul", "Saumitra Khan", "Nisith Pramanik", "Jagannath Sarkar", "Shantanu Thakur",
-  "Debasree Chaudhuri", "Sukanta Majumdar", "Mala Roy", "Sudip Bandyopadhyay", "Kalyan Banerjee"
+  "Suvendu Adhikari",
+  "Partha Bhowmick",
+  "Subhasankar Sarkar",
+  "Firhad Hakim",
+  "Arup Biswas",
+  "Bratya Basu",
+  "Tanmoy Ghosh",
+  "Dilip Ghosh",
+  "Manoj Tigga",
+  "Locket Chatterjee",
+  "Agnimitra Paul",
+  "Saumitra Khan",
+  "Nisith Pramanik",
+  "Jagannath Sarkar",
+  "Shantanu Thakur",
+  "Debasree Chaudhuri",
+  "Sukanta Majumdar",
+  "Mala Roy",
+  "Sudip Bandyopadhyay",
+  "Kalyan Banerjee",
 ];
 
 export function generateInitialData(): Constituency[] {
@@ -144,22 +255,28 @@ export async function getRealElectionData(): Promise<Constituency[]> {
   try {
     // Vercel serverless proxy endpoint (handles CORS via api/results.ts)
     const response = await fetch("/api/results");
-    if (!response.ok) throw new Error(`Server data fetch failed: ${response.status} ${response.statusText}`);
+    if (!response.ok)
+      throw new Error(
+        `Server data fetch failed: ${response.status} ${response.statusText}`,
+      );
     const json = await response.json();
     return processEciData(json);
   } catch (error) {
     console.error("Failed to fetch from Vercel API proxy:", error);
     try {
       // Fallback: Try direct fetch if the Vercel API isn't running (e.g. local 'vite' dev server)
-      const SOURCE = "https://results.eci.gov.in/ResultAcGenMay2026/election-json-S25-live.json";
+      const SOURCE =
+        "https://results.eci.gov.in/ResultAcGenMay2026/election-json-S25-live.json";
       const directRes = await fetch(SOURCE);
       if (!directRes.ok) throw new Error("Direct fetch failed");
       const directJson = await directRes.json();
       return processEciData(directJson);
     } catch (fallbackError) {
-      console.error("Failed to fetch real data entirely, using local mock data:", fallbackError);
+      console.error(
+        "Failed to fetch real data entirely, using local mock data:",
+        fallbackError,
+      );
       return generateInitialData();
     }
   }
 }
-
