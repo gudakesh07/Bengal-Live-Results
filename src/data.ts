@@ -142,13 +142,24 @@ export function generateInitialData(): Constituency[] {
 
 export async function getRealElectionData(): Promise<Constituency[]> {
   try {
+    // Vercel serverless proxy endpoint (handles CORS via api/results.ts)
     const response = await fetch("/api/results");
     if (!response.ok) throw new Error(`Server data fetch failed: ${response.status} ${response.statusText}`);
     const json = await response.json();
     return processEciData(json);
   } catch (error) {
-    console.error("Failed to fetch real data:", error);
-    return generateInitialData();
+    console.error("Failed to fetch from Vercel API proxy:", error);
+    try {
+      // Fallback: Try direct fetch if the Vercel API isn't running (e.g. local 'vite' dev server)
+      const SOURCE = "https://results.eci.gov.in/ResultAcGenMay2026/election-json-S25-live.json";
+      const directRes = await fetch(SOURCE);
+      if (!directRes.ok) throw new Error("Direct fetch failed");
+      const directJson = await directRes.json();
+      return processEciData(directJson);
+    } catch (fallbackError) {
+      console.error("Failed to fetch real data entirely, using local mock data:", fallbackError);
+      return generateInitialData();
+    }
   }
 }
 
