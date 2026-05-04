@@ -1,6 +1,6 @@
 
 
-# Run and deploy your AI Studio app
+# To run this app!!
 
 This contains everything you need to run your app locally.
 
